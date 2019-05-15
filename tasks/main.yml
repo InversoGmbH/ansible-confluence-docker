@@ -1,0 +1,58 @@
+---
+# tasks file for inverso.confluence-docker
+
+- name: check required variables
+  assert:
+    that:
+      - confluence_data_dir                 | mandatory
+      - confluence_version                  | mandatory
+      - confluence_jvm_min_mem              | mandatory
+      - confluence_jvm_max_mem              | mandatory
+      - confluence_support_recommended_args | mandatory
+      - confluence_servername               | mandatory
+  tags: ['varcheck']
+
+- name: ensure docker is present
+  package:
+    name: docker
+    state: present
+
+- name: ensure docker is started and enabled
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: create confluence data dir on docker host
+  file:
+    path: '{{ confluence_data_dir }}'
+    state: directory
+
+- name: ensure system cacerts file is also present for confluence
+  copy:
+    src: '/etc/pki/java/cacerts'
+    dest: '{{ confluence_data_dir }}/'
+    remote_src: yes
+
+# FIXME: try to limit exposed ports to 127.0.0.1 only
+- name: create confluence container
+  docker_container:
+    name: 'confluence'
+    hostname: 'confluence'
+    image: "{{ confluence_image_registry }}{{ confluence_image_registry | ternary('/','') }}{{ confluence_image_name }}:{{ confluence_version }}"
+    state: started
+    restart_policy: unless-stopped
+    cacert_path: '/etc/pki/tls/certs/ca-bundle.crt'
+    network_mode: host
+    volumes:
+      - '{{ confluence_data_dir }}:/var/atlassian/application-data/confluence'
+    env:
+      LANG: 'de_DE.utf8'
+      JVM_MINIMUM_MEMORY: '{{ confluence_jvm_min_mem }}'
+      JVM_MAXIMUM_MEMORY: '{{ confluence_jvm_max_mem }}'
+      JVM_SUPPORT_RECOMMENDED_ARGS: '{{ confluence_support_recommended_args }}'
+      CATALINA_CONNECTOR_PROXYNAME: '{{ confluence_revproxy_name }}'
+      CATALINA_CONNECTOR_PROXYPORT: '{{ confluence_revproxy_port }}'
+      CATALINA_CONNECTOR_SCHEME: '{{ confluence_revproxy_scheme }}'
+      CATALINA_CONNECTOR_SECURE: '{{ confluence_revproxy_secure }}'
+      CATALINA_CONTEXT_PATH: '{{ confluence_webappcontextpath }}'
