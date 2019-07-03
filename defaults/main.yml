@@ -8,6 +8,8 @@ confluence_version               : 'latest'
 confluence_image_registry        : ''
 confluence_image_name            : 'atlassian/confluence-server'
 
+confluence_service_enabled       : 'yes'
+
 confluence_jvm_min_mem           : '2048m'
 confluence_jvm_max_mem           : '3072m'
 confluence_webappcontextpath     : '/confluence'
