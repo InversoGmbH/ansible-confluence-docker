@@ -19,6 +19,8 @@ confluence_proxy_name            : 'corporate-proxy'
 confluence_proxy_port            : '8080'
 confluence_proxy_nonProxyHosts   : 'localhost\|127.0.0.1'
 
+confluence_tomcat_maxthreads     : '48'
+
 confluence_support_recommended_args: >
   -Duser.timezone=Europe/Berlin
   -Duser.region=DE

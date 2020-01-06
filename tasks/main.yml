@@ -54,6 +54,7 @@
       JVM_SUPPORT_RECOMMENDED_ARGS: '{{ confluence_support_recommended_args }}'
       ATL_PROXY_NAME: '{{ confluence_revproxy_name }}'
       ATL_PROXY_PORT: '{{ confluence_revproxy_port }}'
+      ATL_TOMCAT_MAXTHREADS: '{{ confluence_tomcat_maxthreads | default(100) }}'
       ATL_TOMCAT_SCHEME: '{{ confluence_revproxy_scheme }}'
       ATL_TOMCAT_SECURE: '{{ confluence_revproxy_secure }}'
       ATL_TOMCAT_CONTEXTPATH: '{{ confluence_webappcontextpath }}'
