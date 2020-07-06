@@ -51,7 +51,7 @@
       LANG: 'de_DE.utf8'
       JVM_MINIMUM_MEMORY: '{{ confluence_jvm_min_mem }}'
       JVM_MAXIMUM_MEMORY: '{{ confluence_jvm_max_mem }}'
-      JVM_SUPPORT_RECOMMENDED_ARGS: '{{ confluence_support_recommended_args }}'
+      JVM_SUPPORT_RECOMMENDED_ARGS: "{{ confluence_support_recommended_args | replace('\n',' ') }}"
       ATL_PROXY_NAME: '{{ confluence_revproxy_name }}'
       ATL_PROXY_PORT: '{{ confluence_revproxy_port }}'
       ATL_TOMCAT_MAXTHREADS: '{{ confluence_tomcat_maxthreads | default(100) }}'
