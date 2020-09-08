@@ -49,6 +49,8 @@
       - '{{ confluence_data_dir }}:/var/atlassian/application-data/confluence'
     env:
       LANG: 'de_DE.utf8'
+      LANGUAGE: 'de_DE.utf8'
+      LC_ALL: 'de_DE.utf8'
       JVM_MINIMUM_MEMORY: '{{ confluence_jvm_min_mem }}'
       JVM_MAXIMUM_MEMORY: '{{ confluence_jvm_max_mem }}'
       JVM_SUPPORT_RECOMMENDED_ARGS: "{{ confluence_support_recommended_args | replace('\n',' ') }}"
